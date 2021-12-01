@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+JAVAFILE="TP3.java" # change with your filename
+
+for d in Grader/testcase/*; do
+
+    COUNT_FILE=$(find $d/in_* -type f | wc -l)
+    COUNT_FILE=$((COUNT_FILE-1))
+    echo "${COUNT_FILE} testcase(s)"
+
+    for i in $(seq 0 $COUNT_FILE); do
+        NUMBER=$(printf "%02d\n" $i)
+
+        java $JAVAFILE < "$d/in_${NUMBER}.txt" > "$d/exp_${NUMBER}.txt";
+        DIFF=$(diff --unchanged-group-format="" --new-group-format="%>" "$d/out_${NUMBER}.txt"  "$d/exp_${NUMBER}.txt");
+
+        if [ "$DIFF" != "" ]; then
+            echo "Test Case ${NUMBER} : WA";
+            diff "$d/out_${NUMBER}.txt"  "$d/exp_${NUMBER}.txt";
+            else echo "Test Case ${NUMBER} : AC";
+        fi
+
+        rm "$d/exp_${NUMBER}.txt";
+    done
+
+done
