@@ -2,7 +2,7 @@
 
 JAVAFILE="TP3.java" # change with your filename
 
-for d in Grader/testcase/*; do
+for d in src/testcase/*; do
 
     COUNT_FILE=$(find $d/in_* -type f | wc -l)
     COUNT_FILE=$((COUNT_FILE-1))
